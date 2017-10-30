@@ -1,7 +1,6 @@
 <?php
 
         include_once 'user.php';
-
         $user = new User();
 
 
@@ -21,29 +20,6 @@ if($_POST['submit']) {
             $insert = $user->insert_user($name, $price, $quantity, $item_code, $description,$id);
 
         }
-
-
-
-
-//            if (isset($_GET['update'])) {
-//                $id = $_GET['update'];
-
-
-//                $updates = $user->update();
-
-//                if (!$updates == true) {
-//                    echo "not updated";
-//                } else {
-//                    header("Location:index.php");
-//                }
-
-//            }
-        /*else {
-
-            $insert = $user->insert_user($name, $price, $quantity, $item_code, $description);
-
-        }*/
-
 
 
     if (isset($_GET['delete']))
@@ -106,9 +82,6 @@ if($_POST['submit']) {
 
             <tr>
                 <td>
-
-
-                    <input type="hidden" name="id" value="<?php echo $_GET['update']; ?>"/>
                     <input type="submit" name="submit" value="insert">
 
 

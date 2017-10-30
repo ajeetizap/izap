@@ -11,29 +11,30 @@
             {
 
 
-                if (isset($_GET['update'])) {
-                    $id = $_GET['update'];
-//                    $id = $this->conn->insert_id;
-//                    header("Location:index.php");
-
-                    extract($_POST);
-
-                    $sql = $this->conn->prepare("INSERT INTO items (name,price,quantity,item_code,description,id) VALUES (?, ?, ?, ?, ?,?)");
-
-                    $sql->bind_param("siissi", $name, $price, $quantity, $item_code, $description, $id);
-
-                    $sql->execute();
-
+                if (isset($_POST['submit'])) {
+                    if(!isset($_GET['update']))
+                    {
+                        extract($_POST);
+                        
+                        $sql = $this->conn->prepare("INSERT INTO items (name,price,quantity,item_code,description) VALUES (?, ?, ?, ?, ?)");
+    
+                        $sql->bind_param("siiss", $name, $price, $quantity, $item_code, $description;
+    
+                        $sql->execute();
+                    }
                 }
 
 
             }
 
 
-            public function fetchdata($id = 0)
+            public function fetchdata()
 
             {
-
+                if(isset($_GET['update'])&&!empty($_GET['update']))
+                {
+                    $id = $_GET['update'];
+                }
                 if ($id == 0) {
                     $sql = "select * from items";
 
@@ -91,11 +92,8 @@
             function update()
             {
 
-                if (isset($_GET['update'])) {
+                if (isset($_POST['submit'],$_GET['update']) && !empty($_GET['update'])) {
                     $id = $_GET['update'];
-
-                   // header("Location:index.php");
-
 
                     extract($_REQUEST);
                     $stmt = $this->conn->prepare("UPDATE items SET name = ?, price = ?, quantity = ?, item_code = ?, description = ? WHERE id=?");
@@ -109,8 +107,6 @@
                     } else {
                         return true;
                     }
-
-
                 }
 
             }
