@@ -27,10 +27,7 @@
                 }
             }
 
-
-
-
-
+            
 
             public function fetchdata($id = 0)
 
@@ -40,6 +37,7 @@
                 {
                     $id = $_GET['update'];
                 }
+
                 if ($id == 0) {
                     $sql = "select * from items";
                     $result = $this->conn->query($sql) or die($this->conn->connect_error . "Data cannot fatched");
@@ -51,6 +49,7 @@
                     $query->execute();
                     $query->bind_result($name, $price, $quantity, $item_code, $description);
                     $query->fetch();
+                    echo  "'name' => $name, 'price' => $price, 'quantity' => $quantity, 'item_code' => $item_code, 'description' => $description";
                     return ['name' => $name, 'price' => $price, 'quantity' => $quantity, 'item_code' => $item_code, 'description' => $description];
                 }
 

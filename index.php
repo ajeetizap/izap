@@ -5,16 +5,19 @@
         $user = new User();
 
 
-    if($_POST['submit']) {
+$insert = $user->insert_user();
 
+//  $query = $user->fetchdata($id);
 
-        $data = $user->fetchdata($id);
+      /* echo "<pre>";
+       print_r($_REQUEST);
+       exit();*/
 
         $updates = $user->update();
 
 
-        $insert = $user->insert_user();
-    }
+
+
 
 
 
@@ -63,15 +66,15 @@ if (isset($_GET['delete']))
 
             </tr>
             <tr>
-                <td><input type="text" name="name" value="<?php echo $data['name']; ?>" placeholder="name" required=""></td>
+                <td><input type="text" name="name" value="<?php echo $data['name'] ?>" placeholder="name" required=""></td>
 
-                <td><input type="text" name="price" value="<?php echo $data['price']; ?>" placeholder="price" required=""></td>
+                <td><input type="text" name="price" value="<?php echo $data['price'] ?>" placeholder="price" required=""></td>
 
-                <td><input type="text" name="quantity" value="<?php echo $data['quantity']; ?>" placeholder="quantity" required=""></td>
+                <td><input type="text" name="quantity" value="<?php echo $data['quantity'] ?>" placeholder="quantity" required=""></td>
 
-                <td><input type="text" name="item_code" value="<?php echo $data['item_code']; ?>" placeholder="item code" required=""></td>
+                <td><input type="text" name="item_code" value="<?php echo $data['item_code'] ?>" placeholder="item code" required=""></td>
 
-                <td><input type="text" name="description" value="<?php echo $data['description']; ?>" placeholder="description" required=""></td>
+                <td><input type="text" name="description" value="<?php echo $data['description'] ?>" placeholder="description" required=""></td>
 
                 <td><input type="checkbox" name="active" checked></td>
             </tr>
@@ -120,9 +123,10 @@ if (isset($_GET['delete']))
 
         <?php
 
-              $sql=$user->fetchdata();
+        $data = $user->fetchdata($id);
 
-            while($rows = $sql->fetch_assoc()) {
+
+            while($rows = $data->fetch_assoc()) {
                 echo "<tr>";
 
                 echo "<td> <center>" . $rows["name"] . "<center></td>";
