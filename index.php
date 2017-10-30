@@ -6,7 +6,6 @@
 
 
     if($_POST['submit']) {
-        echo "<pre>", print_r($_REQUEST);exit;
 
 
         $data = $user->fetchdata($id);
