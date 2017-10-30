@@ -1,52 +1,67 @@
 <?php
-        include_once 'user.php';
-        $user = new User();
-        if(isset($_GET['update']))
-        {
-            $id = $_GET['update'];
-            $data = $user->fetchdata($id);
-            if (isset($_POST['submit']))
-            {
-                /*echo "<pre>";
-                print_r($_POST); echo $_GET['update'];
-                exit;*/
-                extract($_REQUEST);
-                $updates = $user->update($name, $price, $quantity, $item_code, $description, $id);
 
-                if (!$updates == true)
-                {
-                    echo "not updated";
-                } else
-                    {
-                        header("Location:index.php");
-                    }
-            }
+        include_once 'user.php';
+
+        $user = new User();
+
+
+if($_POST['submit']) {
+    $data = $user->fetchdata($id);
+
+    $updates = $user->update();
+
+//            $insert = $user->insert_user($name, $price, $quantity, $item_code, $description);
+
 
         }
-        else
-            {
-                if (isset($_REQUEST['submit']))
-                {
-                    extract($_POST);
-                    $insert = $user->insert_user($name, $price, $quantity, $item_code, $description);
-                }
+        else{
 
-             }
+            /*echo "<pre>";
+            print_r($_REQUEST)*/
+            $insert = $user->insert_user($name, $price, $quantity, $item_code, $description,$id);
 
-             if (isset($_GET['delete']))
-
-             {
-                $id = $_GET['delete'];
-                $result = $user->delete($id, 'items');
-             }
+        }
 
 
-             
+
+
+//            if (isset($_GET['update'])) {
+//                $id = $_GET['update'];
+
+
+//                $updates = $user->update();
+
+//                if (!$updates == true) {
+//                    echo "not updated";
+//                } else {
+//                    header("Location:index.php");
+//                }
+
+//            }
+        /*else {
+
+            $insert = $user->insert_user($name, $price, $quantity, $item_code, $description);
+
+        }*/
+
+
+
+    if (isset($_GET['delete']))
+
+    {
+        $id = $_GET['delete'];
+        $result = $user->delete($id, 'items');
+    }
+
+
+
+
 ?>
 
 
 <html>
 <head>
+    <title>insert, update and delete file</title>
 
 </head>
 

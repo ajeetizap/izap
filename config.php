@@ -20,12 +20,7 @@ class database
     public function __construct()
     {
 
-
-//        $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-
-
         $this->conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-
 
         if ($this->conn->connect_error) {
 
@@ -35,13 +30,6 @@ class database
             echo "";
         }
 
-       /* if (mysqli_connect_errno()) {
-
-            echo "Error: Could not connect to database.";
-
-            exit;
-
-        }*/
     }
 }
 
