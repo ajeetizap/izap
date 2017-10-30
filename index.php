@@ -5,48 +5,21 @@
         $user = new User();
 
 
-if($_POST['submit']) {
-    $data = $user->fetchdata($id);
-
-    $updates = $user->update();
-
-//            $insert = $user->insert_user($name, $price, $quantity, $item_code, $description);
+    if($_POST['submit']) {
+        echo "<pre>", print_r($_REQUEST);exit;
 
 
-        }
-        else{
+        $data = $user->fetchdata($id);
 
-            /*echo "<pre>";
-            print_r($_REQUEST)*/
-            $insert = $user->insert_user($name, $price, $quantity, $item_code, $description,$id);
+        $updates = $user->update();
 
-        }
+
+        $insert = $user->insert_user();
+    }
 
 
 
-
-//            if (isset($_GET['update'])) {
-//                $id = $_GET['update'];
-
-
-//                $updates = $user->update();
-
-//                if (!$updates == true) {
-//                    echo "not updated";
-//                } else {
-//                    header("Location:index.php");
-//                }
-
-//            }
-        /*else {
-
-            $insert = $user->insert_user($name, $price, $quantity, $item_code, $description);
-
-        }*/
-
-
-
-    if (isset($_GET['delete']))
+if (isset($_GET['delete']))
 
     {
         $id = $_GET['delete'];
@@ -113,9 +86,7 @@ if($_POST['submit']) {
 
 
                 </td>
-                <td>
-                    <a href="index.php"><input type="button"  value="fetch data" ></a>
-                </td>
+
             </tr>
         </table>
 

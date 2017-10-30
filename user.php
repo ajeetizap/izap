@@ -10,50 +10,48 @@
             public function insert_user()
             {
 
+                if (isset($_POST['submit'])) {
 
-                if (isset($_GET['update'])) {
-                    $id = $_GET['update'];
-//                    $id = $this->conn->insert_id;
-//                    header("Location:index.php");
+                    if(!isset($_GET['update']))
+                    {
+                        extract($_POST);
 
-                    extract($_POST);
+                        $sql = $this->conn->prepare("INSERT INTO items (name,price,quantity,item_code,description) VALUES (?, ?, ?, ?, ?)");
 
-                    $sql = $this->conn->prepare("INSERT INTO items (name,price,quantity,item_code,description,id) VALUES (?, ?, ?, ?, ?,?)");
+                        $sql->bind_param("siiss", $name, $price, $quantity, $item_code, $description);
 
-                    $sql->bind_param("siissi", $name, $price, $quantity, $item_code, $description, $id);
+                        $sql->execute();
 
-                    $sql->execute();
-
+                        header('Location:index.php');
+                    }
                 }
-
-
             }
+
+
+
+
 
 
             public function fetchdata($id = 0)
 
             {
 
+                if(isset($_GET['update'])&&!empty($_GET['update']))
+                {
+                    $id = $_GET['update'];
+                }
                 if ($id == 0) {
                     $sql = "select * from items";
-
-                    $result = $this->conn->query($sql) or die($this->conn->connect_error . "Data cannot inserted");
+                    $result = $this->conn->query($sql) or die($this->conn->connect_error . "Data cannot fatched");
                     return $result;
-
-                } else {
-
+                }
+                else {
                     $query = $this->conn->prepare("SELECT name,price,quantity,item_code,description FROM items WHERE id=?");
-
                     $query->bind_param("i", $id);
                     $query->execute();
-
                     $query->bind_result($name, $price, $quantity, $item_code, $description);
-
                     $query->fetch();
-
                     return ['name' => $name, 'price' => $price, 'quantity' => $quantity, 'item_code' => $item_code, 'description' => $description];
-
-
                 }
 
             }
@@ -91,26 +89,20 @@
             function update()
             {
 
-                if (isset($_GET['update'])) {
+                if (isset($_POST['submit'],$_GET['update']) && !empty($_GET['update']))
+                {
                     $id = $_GET['update'];
-
-                   // header("Location:index.php");
-
-
                     extract($_REQUEST);
+
                     $stmt = $this->conn->prepare("UPDATE items SET name = ?, price = ?, quantity = ?, item_code = ?, description = ? WHERE id=?");
-
                     $stmt->bind_param('siissi', $name, $price, $quantity, $item_code, $description, $id);
-
                     $stmt->execute();
-
                     if ($stmt->errno) {
                         return false;
                     } else {
-                        return true;
+                        header("Location:index.php");
+//                        return true;
                     }
-
-
                 }
 
             }
