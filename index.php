@@ -1,25 +1,17 @@
 <?php
-
+error_reporting(E_ALL); ini_set('display_errors', 1);
         include_once 'user.php';
 
         $user = new User();
 
 
 $insert = $user->insert_user();
+    if(isset($_GET['update'])) {
 
-//  $query = $user->fetchdata($id);
+        $data = $user->fetchdata();
 
-      /* echo "<pre>";
-       print_r($_REQUEST);
-       exit();*/
-
-        $updates = $user->update();
-
-
-
-
-
-
+    }
+$updates = $user->update();
 
 if (isset($_GET['delete']))
 
@@ -27,8 +19,6 @@ if (isset($_GET['delete']))
         $id = $_GET['delete'];
         $result = $user->delete($id, 'items');
     }
-
-
 
 
 ?>
@@ -66,15 +56,15 @@ if (isset($_GET['delete']))
 
             </tr>
             <tr>
-                <td><input type="text" name="name" value="<?php echo $data['name'] ?>" placeholder="name" required=""></td>
+                <td><input type="text" name="name" value="" placeholder="name" required=""></td>
 
-                <td><input type="text" name="price" value="<?php echo $data['price'] ?>" placeholder="price" required=""></td>
+                <td><input type="text" name="price" value="" placeholder="price" required=""></td>
 
-                <td><input type="text" name="quantity" value="<?php echo $data['quantity'] ?>" placeholder="quantity" required=""></td>
+                <td><input type="text" name="quantity" value="" placeholder="quantity" required=""></td>
 
-                <td><input type="text" name="item_code" value="<?php echo $data['item_code'] ?>" placeholder="item code" required=""></td>
+                <td><input type="text" name="item_code" value="" placeholder="item code" required=""></td>
 
-                <td><input type="text" name="description" value="<?php echo $data['description'] ?>" placeholder="description" required=""></td>
+                <td><input type="text" name="description" value="" placeholder="description" required=""></td>
 
                 <td><input type="checkbox" name="active" checked></td>
             </tr>
@@ -83,7 +73,7 @@ if (isset($_GET['delete']))
                 <td>
 
 
-                    <input type="hidden" name="id" value="<?php echo $_GET['update']; ?>"/>
+                    <input type="hidden" name="id" value=""/>
                     <input type="submit" name="submit" value="insert">
 
 
@@ -123,10 +113,36 @@ if (isset($_GET['delete']))
 
         <?php
 
-        $data = $user->fetchdata($id);
+
+        $fetch = $user->fetchdata();
+
+if($fetch->num_rows>0) {
 
 
-            while($rows = $data->fetch_assoc()) {
+    while ($rows = $fetch->fetch_assoc()) {
+        echo "<tr>";
+
+        echo "<td> <center>" . $rows["name"] . "<center></td>";
+        echo "<td> <center>" . $rows["price"] . "<center></td>";
+        echo "<td> <center>" . $rows["quantity"] . "</center></td>";
+        echo "<td> <center>" . $rows["item_code"] . "<center></td>";
+        echo "<td> <center>" . $rows["description"] . "<center></td>";
+
+
+        echo "<td> <a href='index.php?update=$rows[id]'>edit<br /></td>";
+        echo "<td> <a href='index.php?delete=$rows[id]'>drop<br /></td>";
+        echo "</tr>";
+
+
+    }
+}
+else{
+    echo "zero result";
+}
+
+
+
+       /* while($rows=$user->mysqli_stmt_fetch($fetch)) {
                 echo "<tr>";
 
                 echo "<td> <center>" . $rows["name"] . "<center></td>";
@@ -141,8 +157,8 @@ if (isset($_GET['delete']))
                 echo "</tr>";
 
 
-            }
-            echo "Fetched data successfully\n";
+            }*/
+//            echo "Fetched data successfully\n";
 
 
 

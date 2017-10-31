@@ -1,8 +1,6 @@
 <?php
         include "config.php";
 
-
-
         class User extends database
         {
 
@@ -27,33 +25,72 @@
                 }
             }
 
-            
 
-            public function fetchdata($id = 0)
+
+
+           /* public function fetchdata($id=0)
 
             {
+                if (isset($_GET['update'])) {
 
-                if(isset($_GET['update'])&&!empty($_GET['update']))
-                {
-                    $id = $_GET['update'];
-                }
+                    $id = $_GET[$id];
 
-                if ($id == 0) {
-                    $sql = "select * from items";
-                    $result = $this->conn->query($sql) or die($this->conn->connect_error . "Data cannot fatched");
-                    return $result;
-                }
-                else {
-                    $query = $this->conn->prepare("SELECT name,price,quantity,item_code,description FROM items WHERE id=?");
-                    $query->bind_param("i", $id);
-                    $query->execute();
-                    $query->bind_result($name, $price, $quantity, $item_code, $description);
-                    $query->fetch();
-                    echo  "'name' => $name, 'price' => $price, 'quantity' => $quantity, 'item_code' => $item_code, 'description' => $description";
-                    return ['name' => $name, 'price' => $price, 'quantity' => $quantity, 'item_code' => $item_code, 'description' => $description];
-                }
 
-            }
+                    if ($id == 0) {
+                        $sql = "select * from items";
+
+                        $result = $this->conn->query($sql) or die($this->conn->connect_error . "Data cannot inserted");
+                        return $result;
+
+                    } else {
+                        $query = $this->conn->prepare("SELECT name,price,quantity,item_code,description FROM items WHERE id=?");
+
+                        $query->bind_param("i", $id);
+                        $query->execute();
+
+                        $query->bind_result($name, $price, $quantity, $item_code, $description);
+
+                        $query->fetch();
+
+                        return ['name' => $name, 'price' => $price, 'quantity' => $quantity, 'item_code' => $item_code, 'description' => $description];
+
+                        $query->close();
+
+
+                    }
+                }
+            }*/
+
+
+
+
+
+             public function fetchdata($id=0)
+
+             {
+                 if(isset($_GET['update'])) {
+                     $id = $_GET['update'];
+                 }
+
+                     if ($id == 0) {
+                         $sql = "select * from items";
+                         $result = $this->conn->query($sql) or die($this->conn->connect_error . "Data cannot fatched");
+                         return $result;
+                     }
+
+                     else {
+                         $query = $this->conn->prepare("SELECT name,price,quantity,item_code,description FROM items WHERE id=?");
+                         $query->bind_param("i", $id);
+                         $query->execute();
+                         $query->bind_result($name, $price, $quantity, $item_code, $description);
+                         $query->fetch();
+                         //                    echo  "'name' => $name, 'price' => $price, 'quantity' => $quantity, 'item_code' => $item_code, 'description' => $description";
+                         return ['name' => $name, 'price' => $price, 'quantity' => $quantity, 'item_code' => $item_code, 'description' => $description];
+                     }
+
+                 }
+
+
 
 
             public function delete($id, $table)
@@ -91,6 +128,7 @@
                 if (isset($_POST['submit'],$_GET['update']) && !empty($_GET['update']))
                 {
                     $id = $_GET['update'];
+
                     extract($_REQUEST);
 
                     $stmt = $this->conn->prepare("UPDATE items SET name = ?, price = ?, quantity = ?, item_code = ?, description = ? WHERE id=?");
