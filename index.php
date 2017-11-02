@@ -1,25 +1,22 @@
 <?php
 session_start();
 $basedir = realpath(__DIR__);
-include_once($basedir . '/items_file/items.php');
+include_once($basedir . '/users_file/usersignup.php');
 
-$items=new  items();
-
+$usersignup=new  usersignup();
 
 
 if(isset($_GET['update'])) {
 
     $id=$_GET['update'];
 
-
-    $data = $items->fetchdata($id);
-
+    $data = $usersignup->fetchdata($id);
 
 }
 
-$updates = $items->update();
+$updates = $usersignup->update();
 
-$insert = $items->insert_user();
+$insert = $usersignup->insert_user();
 
 
 if (isset($_GET['delete']))
@@ -27,11 +24,12 @@ if (isset($_GET['delete']))
 {
     $id = $_GET['delete'];
 
-    $result = $items->delete($id, 'items');
+    $result = $usersignup->delete($id, 'user');
 }
 
 
 ?>
+
 
 
 <html>
@@ -53,29 +51,21 @@ if (isset($_GET['delete']))
             <tr>
                 <th><label>Name</label></th>
 
-                <th><label>Price</label></th>
+                <th><label>eail</label></th>
 
-                <th><label>quantity</label></th>
+                <th><label>password</label></th>
 
-                <th><label>Item code</label></th>
 
-                <th><label>Description</label></th>
-
-                <th><label>Active</label></th>
 
             </tr>
             <tr>
-                <td><input type="text" name="name" value="<?php echo isset( $data['name']) ? $data['name'] : ''; ?>" placeholder="name" required=""></td>
+                <td><input type="text" name="fullname" value="<?php echo isset( $data['fullname']) ? $data['fullname'] : ''; ?>" placeholder="fullname" required=""></td>
 
-                <td><input type="text" name="price" value="<?php echo isset( $data['price']) ? $data['price'] : ''; ?>" placeholder="price" required=""></td>
+                <td><input type="email" name="email" value="<?php echo isset( $data['email']) ? $data['email'] : ''; ?>" placeholder="email" required=""></td>
 
-                <td><input type="text" name="quantity" value="<?php echo isset( $data['quantity']) ? $data['quantity'] : ''; ?>" placeholder="quantity" required=""></td>
+                <td><input type="password" name="password" value="<?php echo isset( $data['password']) ? $data['password'] : ''; ?>" placeholder="password" required=""></td>
 
-                <td><input type="text" name="item_code" value="<?php echo isset( $data['item_code']) ? $data['item_code'] : ''; ?>" placeholder="item code" required=""></td>
 
-                <td><input type="text" name="description" value="<?php echo isset( $data['description']) ? $data['description'] : ''; ?>" placeholder="description" required=""></td>
-
-                <td><input type="checkbox" name="active" checked></td>
             </tr>
 
             <tr>
@@ -108,12 +98,8 @@ if (isset($_GET['delete']))
 
 
             <th><label>Name</label></th>
-            <th><label>Price</label></th>
-            <th><label>quantity</label></th>
-            <th><label>Item code</label></th>
-            <th><label>Description</label></th>
-            <th><label>Active</label></th>
-
+            <th><label>email</label></th>
+            <th><label>password</label></th>
 
 
         </tr>
@@ -128,18 +114,16 @@ if (isset($_GET['delete']))
 
 
 
-        $sql=$items->fetchdata();
+        $sql=$usersignup->fetchdata();
 
 
 
         while($rows = $sql->fetch_assoc()) {
             echo "<tr>";
 
-            echo "<td> <center>" . $rows["name"] . "<center></td>";
-            echo "<td> <center>" . $rows["price"] . "<center></td>";
-            echo "<td> <center>" . $rows["quantity"] . "</center></td>";
-            echo "<td> <center>" . $rows["item_code"] . "<center></td>";
-            echo "<td> <center>" . $rows["description"] . "<center></td>";
+            echo "<td> <center>" . $rows["fullname"] . "<center></td>";
+            echo "<td> <center>" . $rows["email"] . "<center></td>";
+            echo "<td> <center>" . $rows["password"] . "</center></td>";
 
 
             echo "<td> <a href='index.php?update=$rows[id]'>edit<br /></td>";

@@ -6,11 +6,12 @@ ini_set('display_startup_errors', TRUE);
 
 
 $basedir = realpath(__DIR__);
-include_once($basedir . '/items_file/user.php');
+include_once($basedir . '/users_file/login.php');
 
+$login = new login();
 
-$user = new user();
-$data = $user->loginuser();
+$data = $login->loginuser();
+
 ?>
 
 <html>
@@ -24,24 +25,22 @@ $data = $user->loginuser();
 <form action="" method="post">
 <table>
     <tr>
-        <th><label>Name</label></th>
+        <th><label>Email</label></th>
 
-        <th><label>Item code</label></th>
+        <th><label>password</label></th>
 
 
     </tr>
     <tr>
-        <td><input type="text" name="name" value="" placeholder="name" required=""></td>
+        <td><input type="text" name="email" value="" placeholder="email" required=""></td>
 
-        <td><input type="text" name="item_code" value="" placeholder="item code" required=""></td>
+        <td><input type="text" name="password" value="" placeholder="password" required=""></td>
 
-        <td><input type="checkbox" name="active" checked></td>
+
     </tr>
 
     <tr>
         <td>
-
-
 
             <input type="submit" name="submit" value="insert">
 
@@ -54,6 +53,5 @@ $data = $user->loginuser();
 </form>
 </body>
 </html>
-
 
 

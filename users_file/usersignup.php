@@ -4,7 +4,7 @@ include('connection.php');
 
 
 
-class items extends database
+class usersignup extends connection
 {
 
 
@@ -16,9 +16,9 @@ class items extends database
 
                 extract($_POST);
 
-                $sql = $this->conn->prepare("INSERT INTO items (name,price,quantity,item_code,description) VALUES (?, ?, ?, ?, ?)");
+                $sql = $this->conn->prepare("INSERT INTO user (fullname,email,password) VALUES (?, ?, ?)");
 
-                $sql->bind_param("siiss", $name, $price, $quantity, $item_code, $description);
+                $sql->bind_param("sss", $fullname,$email,$password);
 
                 $sql->execute();
 
@@ -32,23 +32,23 @@ class items extends database
     {
 
         if($id==0) {
-            $sql = "select * from items";
+            $sql = "select * from user";
 
             $result = $this->conn->query($sql) or die($this->conn->connect_error . "Data cannot inserted");
             return $result;
 
         }
         else{
-            $query=$this->conn->prepare("SELECT name,price,quantity,item_code,description FROM items WHERE id=?");
+            $query=$this->conn->prepare("SELECT fullname,email,password FROM user WHERE id=?");
 
             $query->bind_param("i",$id);
             $query->execute();
 
-            $query->bind_result($name,$price,$quantity,$item_code,$description);
+            $query->bind_result($fullname,$email,$password);
 
             $query->fetch();
 
-            return ['name'=>$name,'price'=>$price,'quantity'=>$quantity,'item_code'=>$item_code,'description'=>$description];
+            return ['fullname'=>$fullname,'email'=>$email,'password'=>$password];
 
 
 
@@ -97,9 +97,9 @@ class items extends database
 
             extract($_REQUEST);
 
-            $stmt = $this->conn->prepare("UPDATE items SET name = ?, price = ?, quantity = ?, item_code = ?, description = ? WHERE id=?");
+            $stmt = $this->conn->prepare("UPDATE user SET fullname = ?, email = ?, password = ? WHERE id=?");
 
-            $stmt->bind_param('siissi', $name, $price, $quantity, $item_code, $description, $id);
+            $stmt->bind_param('sssi', $fullname, $email, $password, $id);
 
             $stmt->execute();
 
