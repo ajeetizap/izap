@@ -1,25 +1,25 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
+session_start();
+$basedir = realpath(__DIR__);
+include_once($basedir . '/items_file/items.php');
 
-include_once 'user.php';
+$items=new  items();
 
-$user = new User();
+
 
 if(isset($_GET['update'])) {
 
     $id=$_GET['update'];
 
 
-    $data = $user->fetchdata($id);
+    $data = $items->fetchdata($id);
 
 
 }
 
-$updates = $user->update();
+$updates = $items->update();
 
-$insert = $user->insert_user();
+$insert = $items->insert_user();
 
 
 if (isset($_GET['delete']))
@@ -27,7 +27,7 @@ if (isset($_GET['delete']))
 {
     $id = $_GET['delete'];
 
-    $result = $user->delete($id, 'items');
+    $result = $items->delete($id, 'items');
 }
 
 
@@ -128,7 +128,7 @@ if (isset($_GET['delete']))
 
 
 
-        $sql=$user->fetchdata();
+        $sql=$items->fetchdata();
 
 
 

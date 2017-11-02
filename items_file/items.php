@@ -1,9 +1,10 @@
 <?php
-include('configuration.php');
+
+include('connection.php');
 
 
 
-class User extends database
+class items extends database
 {
 
 
@@ -29,10 +30,6 @@ class User extends database
     public function fetchdata($id=0)
 
     {
-        if(isset($_GET['update'])) {
-
-
-        }
 
         if($id==0) {
             $sql = "select * from items";

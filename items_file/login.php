@@ -5,9 +5,7 @@ ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
 
 
-$basedir = realpath(__DIR__);
-include_once($basedir . '/items_file/user.php');
-
+include 'user.php';
 
 $user = new user();
 $data = $user->loginuser();

@@ -1,12 +1,7 @@
  <?php
-/**
- * Created by PhpStorm.
- * User: ajeet
- * Date: 10/31/17
- * Time: 4:09 PM
- */
 
-include('config.php');
+
+include('./config.php');
 
  class database
  {
