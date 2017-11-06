@@ -6,9 +6,14 @@ ini_set('display_startup_errors', TRUE);
 
 
 $basedir = realpath(__DIR__);
-include_once($basedir . '/users_file/login.php');
+include_once($basedir . '/users_file/user.php');
 
-$login = new login();
+
+if(isset($_SESSION['login_user'])){
+    header("location: profile.php");
+}
+
+$login = new user();
 
 $data = $login->loginuser();
 
@@ -34,7 +39,7 @@ $data = $login->loginuser();
     <tr>
         <td><input type="text" name="email" value="" placeholder="email" required=""></td>
 
-        <td><input type="text" name="password" value="" placeholder="password" required=""></td>
+        <td><input type="password" name="password" value="" placeholder="password" required=""></td>
 
 
     </tr>
@@ -42,7 +47,7 @@ $data = $login->loginuser();
     <tr>
         <td>
 
-            <input type="submit" name="submit" value="insert">
+            <input type="submit" name="submit" value="login">
 
 
         </td>

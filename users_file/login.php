@@ -1,15 +1,18 @@
-<?php
-
+<!--
+--><?php
+/*
 
 include 'connection.php';
+
+session_start();
+
+$error='';
 
 class login extends connection
 {
 
     public function loginuser()
     {
-
-        session_start();
 
 
         if (isset($_POST['submit'])) {
@@ -25,15 +28,25 @@ class login extends connection
                 $stmt->bind_param('ss', $email, $password);
                 $stmt->execute();
                 $stmt->store_result();
+//                $rows= mysql_num_rows($stmt);
+              echo $rows = $stmt->num_rows();
+              exit;
 
-                echo $stmt->num_rows();
+                if ($rows == 1) {
 
-            } else {
-                echo "not submitted";
+                    $_SESSION['login_user'] = $email;
+                    echo "login";
+//                    header("location: profile.php"); // Redirecting To Other Page
+                } else {
+                    $error = "Username or Password is invalid";
+                }
+
             }
         }
 
-    }
+        }
+
+
 }
 
 
@@ -42,4 +55,4 @@ class login extends connection
 
 
 
-?>
+*/?>

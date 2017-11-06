@@ -1,22 +1,27 @@
-<?php
-session_start();
-$basedir = realpath(__DIR__);
-include_once($basedir . '/users_file/usersignup.php');
 
-$usersignup=new  usersignup();
+<?php
+
+$basedir = realpath(__DIR__);
+include_once($basedir . '/users_file/user.php');
+
+if(isset($_SESSION['login_user'])){
+    header("location: profile.php");
+}
+
+$user=new  user();
 
 
 if(isset($_GET['update'])) {
 
     $id=$_GET['update'];
 
-    $data = $usersignup->fetchdata($id);
+    $data = $user->fetchdata($id);
 
 }
 
-$updates = $usersignup->update();
+$updates = $user->update();
 
-$insert = $usersignup->insert_user();
+$insert = $user->insert_user();
 
 
 if (isset($_GET['delete']))
@@ -24,7 +29,7 @@ if (isset($_GET['delete']))
 {
     $id = $_GET['delete'];
 
-    $result = $usersignup->delete($id, 'user');
+    $result = $user->delete($id, 'user');
 }
 
 
@@ -51,7 +56,7 @@ if (isset($_GET['delete']))
             <tr>
                 <th><label>Name</label></th>
 
-                <th><label>eail</label></th>
+                <th><label>email</label></th>
 
                 <th><label>password</label></th>
 
@@ -61,7 +66,7 @@ if (isset($_GET['delete']))
             <tr>
                 <td><input type="text" name="fullname" value="<?php echo isset( $data['fullname']) ? $data['fullname'] : ''; ?>" placeholder="fullname" required=""></td>
 
-                <td><input type="email" name="email" value="<?php echo isset( $data['email']) ? $data['email'] : ''; ?>" placeholder="email" required=""></td>
+                <td><input type="text" name="email" value="<?php echo isset( $data['email']) ? $data['email'] : ''; ?>" placeholder="email" required=""></td>
 
                 <td><input type="password" name="password" value="<?php echo isset( $data['password']) ? $data['password'] : ''; ?>" placeholder="password" required=""></td>
 
@@ -114,7 +119,7 @@ if (isset($_GET['delete']))
 
 
 
-        $sql=$usersignup->fetchdata();
+        $sql=$user->fetchdata();
 
 
 
