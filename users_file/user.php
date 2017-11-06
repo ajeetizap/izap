@@ -36,6 +36,9 @@ class user extends connection
                         } else {
                             extract($_POST);
 
+                            $password = crypt('$1$0dFnnKfj$6zfikJVHIK8oYhx2eXJ8p/',$_POST['password']);
+
+
                             $sql = $this->conn->prepare("INSERT INTO user (fullname,email,password) VALUES (?, ?, ?)");
 
                             $sql->bind_param("sss", $fullname, $email, $password);
@@ -58,11 +61,13 @@ class user extends connection
 
         if (isset($_POST['submit'])) {
             extract($_POST);
+
             $sql = "SELECT * FROM user WHERE email= ? AND password=?";
 
             if ($stmt = $this->conn->prepare($sql)) {
+$pass=crypt('caf1a3dfb505ffed0d024130f58c5cfa',$password);
 
-                $stmt->bind_param('ss', $email,$password);
+                $stmt->bind_param('ss', $email,$pass);
                 $stmt->execute();
                 $stmt->store_result();
 
@@ -76,10 +81,6 @@ class user extends connection
 
                     header("location: profile.php");
 
-                    /*$_SESSION['login_user'] = $email;
-
-
-                    header("Location:profile.php");*/
                 }
                 else {
                     echo  "Username or Password is invalid";
@@ -161,7 +162,7 @@ class user extends connection
             $id = $_GET['update'];
 
             extract($_REQUEST);
-
+            $password=crypt('caf1a3dfb505ffed0d024130f58c5cfa',$password);
             $stmt = $this->conn->prepare("UPDATE user SET fullname = ?, email = ?, password = ? WHERE id=?");
 
             $stmt->bind_param('sssi', $fullname, $email, $password, $id);
