@@ -1,6 +1,7 @@
 <?php
-include('connection.php');
-SESSION_unset();
+$basedir = realpath(__DIR__);
+include_once($basedir . '/users_file/connection.php');
+
 
 if(session_destroy()) // Destroying All Sessions
 {

@@ -15,8 +15,12 @@
 <body>
 <div id="profile">
 
-    <b id="welcome">Welcome : <i><?php echo $login_session; ?></i></b>
-    <b id="logout">
+    <b id="welcome">Welcome <br>
+        <?php
+        echo $user_check;
+        ?>
+
+    <b id="logout">&nbsp;&nbsp;
         <a href="logout.php">Log Out</a></b>
 </div>
 </body>

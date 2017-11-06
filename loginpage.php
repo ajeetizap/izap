@@ -48,6 +48,7 @@ $data = $login->loginuser();
         <td>
 
             <input type="submit" name="submit" value="login">
+           <a href="index.php"><input type="button" name="signin" value="New User"></a>
 
 
         </td>

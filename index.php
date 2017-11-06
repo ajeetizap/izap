@@ -35,10 +35,15 @@ if (isset($_GET['delete']))
 
 ?>
 
+<!--<script type="text/javascript">
+    signup = document.getElementById("signup"); //searches for and detects the input element from the 'myButton' id
+    signup.value = "update";
 
+</script>-->
 
 <html>
 <head>
+    <title>signin page</title>
 
 </head>
 
@@ -78,7 +83,8 @@ if (isset($_GET['delete']))
 
 
                     <input type="hidden" name="id" value="<?php echo isset($_GET['update']) ? $_GET['update'] : ''; ?>" />
-                    <input type="submit" name="submit" value="insert">
+                    <input type="submit" name="submit" id="signup" value="signup">
+                    <a href="loginpage.php"> <input type="button" name="login" value="Already signin"></a>
 
 
                 </td>

@@ -66,12 +66,14 @@ class user extends connection
                 $stmt->execute();
                 $stmt->store_result();
 
-               echo $row = $stmt->num_rows();
+                $row = $stmt->num_rows();
 
 
                 if ($row >= 1) {
 
-                    $_SESSION['email']=$email;
+                    $_SESSION['login_user']=$email;
+
+
                     header("location: profile.php");
 
                     /*$_SESSION['login_user'] = $email;
@@ -86,33 +88,6 @@ class user extends connection
             }
         }
 
-
-
-
-        /*if (isset($_POST['submit'])) {
-
-
-            if (empty($_POST['email']) || empty($_POST['password'])) {
-                echo "email or Password is invalid";
-            }
-            else {
-
-                $email = $_POST['email'];
-                $password = $_POST['password'];
-
-
-                $query = "select * from user where password='$password' AND email='$email'";
-
-                $rows = $query->num_rows();
-                if ($rows >= 1) {
-                    $_SESSION['login_user'] = $email;
-                    header("location: profile.php");
-                } else {
-                    echo "Username or Password is invalid";
-                }
-
-            }
-        }*/
     }
     
 
@@ -172,7 +147,7 @@ class user extends connection
             echo 'Error: cannot delete id ' . $id . ' from table ' . $table;
             return false;
         } else {
-            return true;
+            header("Location:index.php");
         }
 
 
