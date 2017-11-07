@@ -1,16 +1,21 @@
-<?php
-session_start();
+    <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
+        session_start();
 
-define('DB_SERVER', 'localhost');
+  /*  if(isset($_SESSION['login_user'])){
+        header("location: profile.php");
+    }*/
 
-define('DB_USERNAME', 'ajeet');
+        error_reporting(E_ALL);
+        ini_set('display_errors', TRUE);
+        ini_set('display_startup_errors', TRUE);
 
-define('DB_PASSWORD', 'ajeet');
+        define('DB_SERVER', 'localhost');
 
-define('DB_DATABASE', 'ajeet');
+        define('DB_USERNAME', 'ajeet');
 
-?>
+        define('DB_PASSWORD', 'ajeet');
+
+        define('DB_DATABASE', 'ajeet');
+
+    ?>

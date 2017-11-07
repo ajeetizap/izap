@@ -35,12 +35,6 @@ if (isset($_GET['delete']))
 
 ?>
 
-<!--<script type="text/javascript">
-    signup = document.getElementById("signup"); //searches for and detects the input element from the 'myButton' id
-    signup.value = "update";
-
-</script>-->
-
 <html>
 <head>
     <title>signin page</title>
@@ -137,8 +131,9 @@ if (isset($_GET['delete']))
             echo "<td> <center>" . $rows["password"] . "</center></td>";
 
 
-            echo "<td> <a href='index.php?update=$rows[id]'>edit<br /></td>";
-            echo "<td> <a href='index.php?delete=$rows[id]'>drop<br /></td>";
+            echo "<td> <a href='index.php?update=$rows[id]'><input type='button' id='edit' value='edit'></a><br /></td>";
+            echo "<td> <a href='index.php?delete=$rows[id]'><input type='button' id='drop' value='drop'></a><br /></td>";
+//            echo "<td> <a href='index.php?delete=$rows[id]'>drop<br /></td>";
             echo "</tr>";
 
 

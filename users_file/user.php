@@ -20,6 +20,7 @@ class user extends connection
 
                 if (!isset($_GET['update'])) {
 
+
                     $sql = "SELECT * FROM user WHERE email=? ";
 
                     if ($stmt = $this->conn->prepare($sql)) {
@@ -36,7 +37,8 @@ class user extends connection
                         } else {
                             extract($_POST);
 
-                            $password = crypt('$1$0dFnnKfj$6zfikJVHIK8oYhx2eXJ8p/',$_POST['password']);
+
+                            $password = md5($_POST['password']);
 
 
                             $sql = $this->conn->prepare("INSERT INTO user (fullname,email,password) VALUES (?, ?, ?)");
@@ -65,7 +67,7 @@ class user extends connection
             $sql = "SELECT * FROM user WHERE email= ? AND password=?";
 
             if ($stmt = $this->conn->prepare($sql)) {
-$pass=crypt('caf1a3dfb505ffed0d024130f58c5cfa',$password);
+            $pass=md5($password);
 
                 $stmt->bind_param('ss', $email,$pass);
                 $stmt->execute();
@@ -91,7 +93,52 @@ $pass=crypt('caf1a3dfb505ffed0d024130f58c5cfa',$password);
 
     }
     
+public function reset_password(){
 
+    if (isset($_POST['submit'])) {
+
+        extract($_POST);
+
+        $email=$_POST['email'];
+
+        $sql = "SELECT * FROM user WHERE email= ?";
+
+        if ($stmt = $this->conn->prepare($sql)) {
+
+
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+            $stmt->store_result();
+
+            $row = $stmt->num_rows();
+
+
+            if ($row >= 1) {
+
+                $password = md5($password);
+
+                $stmt = $this->conn->prepare("UPDATE user SET email = ?, password = ? WHERE email=?");
+
+                $stmt->bind_param('sss',$email,$password);
+                $stmt->execute();
+
+                echo "password changed successfully";
+
+            } else {
+                echo "email id does not matches";
+            }
+
+        }
+
+    }
+
+
+
+
+
+
+
+}
 
     public function fetchdata($id=0)
 
@@ -115,7 +162,6 @@ $pass=crypt('caf1a3dfb505ffed0d024130f58c5cfa',$password);
             $query->fetch();
 
             return ['fullname'=>$fullname,'email'=>$email,'password'=>$password];
-
 
 
 
@@ -162,7 +208,7 @@ $pass=crypt('caf1a3dfb505ffed0d024130f58c5cfa',$password);
             $id = $_GET['update'];
 
             extract($_REQUEST);
-            $password=crypt('caf1a3dfb505ffed0d024130f58c5cfa',$password);
+            $password=md5($password);
             $stmt = $this->conn->prepare("UPDATE user SET fullname = ?, email = ?, password = ? WHERE id=?");
 
             $stmt->bind_param('sssi', $fullname, $email, $password, $id);
@@ -172,8 +218,8 @@ $pass=crypt('caf1a3dfb505ffed0d024130f58c5cfa',$password);
             if ($stmt->errno) {
                 return false;
             } else {
-                header("Location:index.php");
-//                return true;
+
+                return true;
             }
 
         }
