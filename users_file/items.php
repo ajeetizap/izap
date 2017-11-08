@@ -19,6 +19,8 @@ class items extends connection
 
                 $sql->execute();
 
+
+
             }
         }
     }
@@ -67,17 +69,11 @@ class items extends connection
 
         if ($sql->execute()) {
 
-
             echo "Record deleted successfully";
+
+
         } else {
             echo "Error deleting record: " . $this->conn->error;
-        }
-
-        if ($sql == false) {
-            echo 'Error: cannot delete id ' . $id . ' from table ' . $table;
-            return false;
-        } else {
-            return true;
         }
 
 
@@ -101,8 +97,10 @@ class items extends connection
             if ($stmt->errno) {
                 return false;
             } else {
-
+                echo "record updated";
                 return true;
+
+
             }
 
         }

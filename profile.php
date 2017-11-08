@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
 
    include('session.php');
 
@@ -19,6 +22,7 @@
     <b id="welcome">Welcome <br>
         <?php
        echo $user_check;
+
 
         ?>
 
@@ -41,9 +45,9 @@ include_once($basedir . '/users_file/user.php');
 $user=new  user();
 
 
-if(isset($_GET['update'])) {
+if(isset($_GET['update_user'])) {
 
-    $id=$_GET['update'];
+    $id=$_GET['update_user'];
 
     $data = $user->fetchdata($id);
 
@@ -54,13 +58,14 @@ $updates = $user->update();
 $insert = $user->insert_user();
 
 
-if (isset($_GET['delete']))
+if (isset($_GET['delete_user']))
 
 {
-    $id = $_GET['delete'];
+    $id = $_GET['delete_user'];
 
     $result = $user->delete($id, 'user');
 }
+
 
 
 ?>
@@ -136,7 +141,7 @@ if (isset($_GET['delete']))
 
                      <th><label>Name</label></th>
                      <th><label>email</label></th>
-                     <th><label>password</label></th>
+
 
 
                  </tr>
@@ -160,18 +165,17 @@ if (isset($_GET['delete']))
 
                      echo "<td> <center>" . $rows["fullname"] . "<center></td>";
                      echo "<td> <center>" . $rows["email"] . "<center></td>";
-                     echo "<td> <center>" . $rows["password"] . "</center></td>";
 
 
-                     echo "<td> <a href='profile.php?update=$rows[id]'><input type='button' id='edit' value='edit'></a><br /></td>";
-                     echo "<td> <a href='profile.php?delete=$rows[id]'><input type='button' id='drop' value='drop'></a><br /></td>";
+
+                     echo "<td> <a href='profile.php?update_user=$rows[id]'><input type='button' id='edit' value='edit'></a><br /></td>";
+                     echo "<td> <a href='profile.php?delete_user=$rows[id]' onClick=\"return confirm('Are you sure you want to delete?');\"><input type='button' id='drop' value='drop'  ></a><br /></td>";
                      echo "</tr>";
 
 
 
                  }
                  echo "Fetched data successfully\n";
-
 
 
 
@@ -200,9 +204,9 @@ if (isset($_GET['delete']))
 
 
 
-             if(isset($_GET['update'])) {
+             if(isset($_GET['update_item'])) {
 
-                 $id=$_GET['update'];
+                 $id=$_GET['update_item'];
 
 
                  $data = $items->fetchdata($id);
@@ -215,10 +219,10 @@ if (isset($_GET['delete']))
              $insert = $items->insert_user();
 
 
-             if (isset($_GET['delete']))
+             if (isset($_GET['delete_item']))
 
              {
-                 $id = $_GET['delete'];
+                 $id = $_GET['delete_item'];
 
                  $result = $items->delete($id, 'items');
              }
@@ -324,7 +328,6 @@ if (isset($_GET['delete']))
                      $sql=$items->fetchdata();
 
 
-
                      while($rows = $sql->fetch_assoc()) {
                          echo "<tr>";
 
@@ -335,8 +338,8 @@ if (isset($_GET['delete']))
                          echo "<td> <center>" . $rows["description"] . "<center></td>";
 
 
-                         echo "<td> <a href='profile.php?update=$rows[id]'>edit<br /></td>";
-                         echo "<td> <a href='profile.php?delete=$rows[id]'>drop<br /></td>";
+                         echo "<td> <a href='profile.php?update_item=$rows[id]'>edit<br /></td>";
+                         echo "<td> <a href='profile.php?delete_item=$rows[id]' onClick=\"return confirm('Are you sure you want to delete?');\">drop<br /></td>";
                          echo "</tr>";
 
 

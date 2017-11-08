@@ -1,7 +1,11 @@
 <?php
-include_once('connection.php');
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
 
-include('user.php');
+
+$basedir = realpath(__DIR__);
+include_once($basedir . '/users_file/user.php');
 
 $user=new user();
 
@@ -29,6 +33,7 @@ $data = $user->reset_password();
                     <tr>
                         <td>
                             <input type="submit" name="submit" value="change password">
+                           <a href="loginpage.php"> <input type="button" name="login_page" value="Login here"></a>
                         </td>
                     </tr>
                 </table>

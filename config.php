@@ -1,10 +1,8 @@
     <?php
-
+    session_set_cookie_params(3600,"/");
         session_start();
 
-  /*  if(isset($_SESSION['login_user'])){
-        header("location: profile.php");
-    }*/
+
 
         error_reporting(E_ALL);
         ini_set('display_errors', TRUE);

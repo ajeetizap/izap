@@ -18,7 +18,7 @@ class user extends connection
                 echo "Invalid email format";
             }else{
 
-                if (!isset($_GET['update'])) {
+                if (!isset($_GET['update_user'])) {
 
 
                     $sql = "SELECT * FROM user WHERE email=? ";
@@ -33,7 +33,7 @@ class user extends connection
 
 
                         if ($rows >= 1) {
-                            echo "email exists";
+                            echo "email already exists";
                         } else {
                             extract($_POST);
 
@@ -46,6 +46,8 @@ class user extends connection
                             $sql->bind_param("sss", $fullname, $email, $password);
 
                             $sql->execute();
+
+                            echo "insert data successfully";
                         }
                     }
 
@@ -54,6 +56,7 @@ class user extends connection
             }
 
         }
+
        }
 
 
@@ -78,7 +81,15 @@ class user extends connection
 
                 if ($row >= 1) {
 
+
+//                    $_SESSION['login_user_name']= $fullname;
                     $_SESSION['login_user']=$email;
+                    $_SESSION['user_id']=$id;
+
+
+                    setcookie('login_user_name', $row['login_user_name'], time() + (60 * 60 * 24 * 30), "/");
+                    setcookie('login_user', $row['login_user'], time() + (60 * 60 * 24 * 30), "/");
+
 
 
                     header("location: profile.php");
@@ -97,7 +108,8 @@ public function reset_password(){
 
     if (isset($_POST['submit'])) {
 
-        extract($_POST);
+
+        extract($_REQUEST);
 
         $email=$_POST['email'];
 
@@ -119,7 +131,7 @@ public function reset_password(){
 
                 $stmt = $this->conn->prepare("UPDATE user SET email = ?, password = ? WHERE email=?");
 
-                $stmt->bind_param('sss',$email,$password);
+                $stmt->bind_param('sss',$email,$password,$email);
                 $stmt->execute();
 
                 echo "password changed successfully";
@@ -131,12 +143,6 @@ public function reset_password(){
         }
 
     }
-
-
-
-
-
-
 
 }
 
@@ -152,6 +158,7 @@ public function reset_password(){
 
         }
         else{
+
             $query=$this->conn->prepare("SELECT fullname,email,password FROM user WHERE id=?");
 
             $query->bind_param("i",$id);
@@ -186,43 +193,54 @@ public function reset_password(){
 
 
             echo "Record deleted successfully";
+
+
         } else {
             echo "Error deleting record: " . $this->conn->error;
-        }
-
-        if ($sql == false) {
-            echo 'Error: cannot delete id ' . $id . ' from table ' . $table;
-            return false;
-        } else {
-            header("Location:index.php");
         }
 
 
     }
 
 
-
     function update()
     {
-        if (isset($_POST['submit'], $_GET['update']) && !empty($_GET['update'])) {
-            $id = $_GET['update'];
 
-            extract($_REQUEST);
-            $password=md5($password);
-            $stmt = $this->conn->prepare("UPDATE user SET fullname = ?, email = ?, password = ? WHERE id=?");
+        if (isset($_POST['submit'], $_GET['update_user']) && !empty($_GET['update_user'])) {
+            $id = $_GET['update_user'];
 
-            $stmt->bind_param('sssi', $fullname, $email, $password, $id);
+            if($_SESSION['user_id']==$_GET['update_user']){
 
-            $stmt->execute();
 
-            if ($stmt->errno) {
-                return false;
-            } else {
+                extract($_REQUEST);
 
-                return true;
+                $password = md5($password);
+                $stmt = $this->conn->prepare("UPDATE user SET fullname = ?, email = ?, password = ? WHERE id=?");
+
+                $stmt->bind_param('sssi', $fullname, $email, $password, $id);
+
+                $stmt->execute();
+
+                if ($stmt->errno) {
+                    return false;
+                }
+                else {
+                    echo "record updated";
+
+                    return true;
+                }
+
             }
 
+            else{
+                echo "not  updated";
+            }
+
+
+
         }
+
+
     }
 
 

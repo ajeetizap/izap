@@ -3,8 +3,8 @@ $basedir = realpath(__DIR__);
 include_once($basedir . '/users_file/connection.php');
 
 
-if(session_destroy()) // Destroying All Sessions
+if(session_destroy())
 {
-    header("Location: index.php"); // Redirecting To Home Page
+    header("Location: loginpage.php");
 }
 ?>

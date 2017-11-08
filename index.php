@@ -1,39 +1,22 @@
 
-<?php
+    <?php
 
-$basedir = realpath(__DIR__);
-include_once($basedir . '/users_file/user.php');
-
-if(isset($_SESSION['login_user'])){
-    header("location: profile.php");
-}
-
-$user=new  user();
+    $basedir = realpath(__DIR__);
+    include_once($basedir . '/users_file/user.php');
 
 
-if(isset($_GET['update'])) {
 
-    $id=$_GET['update'];
-
-    $data = $user->fetchdata($id);
-
-}
-
-$updates = $user->update();
-
-$insert = $user->insert_user();
+    if(isset($_SESSION['login_user'])){
+        header("location: profile.php");
+    }
+    $user=new user();
 
 
-if (isset($_GET['delete']))
 
-{
-    $id = $_GET['delete'];
-
-    $result = $user->delete($id, 'user');
-}
+    $insert = $user->insert_user();
 
 
-?>
+    ?>
 
 <html>
 <head>
@@ -63,11 +46,11 @@ if (isset($_GET['delete']))
 
             </tr>
             <tr>
-                <td><input type="text" name="fullname" value="<?php echo isset( $data['fullname']) ? $data['fullname'] : ''; ?>" placeholder="fullname" required=""></td>
+                <td><input type="text" name="fullname"  placeholder="fullname" required=""></td>
 
-                <td><input type="text" name="email" value="<?php echo isset( $data['email']) ? $data['email'] : ''; ?>" placeholder="email" required=""></td>
+                <td><input type="text" name="email"  placeholder="email" required=""></td>
 
-                <td><input type="password" name="password" value="<?php echo isset( $data['password']) ? $data['password'] : ''; ?>" placeholder="password" required=""></td>
+                <td><input type="password" name="password"  placeholder="password" required=""></td>
 
 
             </tr>
@@ -92,66 +75,9 @@ if (isset($_GET['delete']))
 
 
 
-    <br> <br> <br> <br> <br> <br>
 
 
 
-
-
-    <table>
-        <tr>
-
-
-            <th><label>Name</label></th>
-            <th><label>email</label></th>
-            <th><label>password</label></th>
-
-
-        </tr>
-
-
-
-
-
-
-        <?php
-
-
-
-
-        $sql=$user->fetchdata();
-
-
-
-        while($rows = $sql->fetch_assoc()) {
-            echo "<tr>";
-
-            echo "<td> <center>" . $rows["fullname"] . "<center></td>";
-            echo "<td> <center>" . $rows["email"] . "<center></td>";
-            echo "<td> <center>" . $rows["password"] . "</center></td>";
-
-
-            echo "<td> <a href='index.php?update=$rows[id]'><input type='button' id='edit' value='edit'></a><br /></td>";
-            echo "<td> <a href='index.php?delete=$rows[id]'><input type='button' id='drop' value='drop'></a><br /></td>";
-//            echo "<td> <a href='index.php?delete=$rows[id]'>drop<br /></td>";
-            echo "</tr>";
-
-
-
-        }
-        echo "Fetched data successfully\n";
-
-
-
-
-
-        ?>
-
-
-
-
-
-    </table>
 
 
 

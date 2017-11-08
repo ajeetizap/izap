@@ -49,7 +49,7 @@ $data = $login->loginuser();
 
             <input type="submit" name="submit" value="login">
            <a href="index.php"><input type="button" name="signin" value="New User"></a>
-           <a href="users_file/reset_password.php"><input type="button" name="reset" value="reset password"></a>
+           <a href="reset_password.php"><input type="button" name="reset" value="reset password"></a>
 
 
         </td>
