@@ -67,14 +67,19 @@ class user extends connection
         if (isset($_POST['submit'])) {
             extract($_POST);
 
-            $sql = "SELECT * FROM user WHERE email= ? AND password=?";
+
+            $sql = "SELECT fullname,email,password,id FROM user WHERE email= ? AND password=?";
 
             if ($stmt = $this->conn->prepare($sql)) {
-            $pass=md5($password);
+                extract($_POST);
+
+                $pass=md5($_POST['password']);
 
                 $stmt->bind_param('ss', $email,$pass);
                 $stmt->execute();
                 $stmt->store_result();
+                $stmt->bind_result($fullname,$email,$password,$id);
+                $stmt->fetch();
 
                 $row = $stmt->num_rows();
 
@@ -82,13 +87,12 @@ class user extends connection
                 if ($row >= 1) {
 
 
-//                    $_SESSION['login_user_name']= $fullname;
                     $_SESSION['login_user']=$email;
                     $_SESSION['user_id']=$id;
 
 
-                    setcookie('login_user_name', $row['login_user_name'], time() + (60 * 60 * 24 * 30), "/");
                     setcookie('login_user', $row['login_user'], time() + (60 * 60 * 24 * 30), "/");
+                    setcookie('user_id', $row['user_id'], time() + (60 * 60 * 24 * 30), "/");
 
 
 
@@ -109,7 +113,7 @@ public function reset_password(){
     if (isset($_POST['submit'])) {
 
 
-        extract($_REQUEST);
+        extract($_POST);
 
         $email=$_POST['email'];
 
@@ -127,14 +131,45 @@ public function reset_password(){
 
             if ($row >= 1) {
 
-                $password = md5($password);
+//                $selector = bin2hex(random_bytes(8));
+                $token = random_bytes(16);
+                $token = md5($token);
 
-                $stmt = $this->conn->prepare("UPDATE user SET email = ?, password = ? WHERE email=?");
-
-                $stmt->bind_param('sss',$email,$password,$email);
+                $stmt = $this->conn->prepare("UPDATE user SET token = ? WHERE email= ?");
+                $stmt->bind_param("ss",$token,$email);
                 $stmt->execute();
 
-                echo "password changed successfully";
+
+                require("PHPMailer_5.2.4/class.phpmailer.php");
+
+
+                $mail = new PHPMailer;
+
+                $mail->SMTPDebug = 1;
+                $mail->isSMTP();
+                $mail->Host = "smtp.gmail.com";
+                $mail->SMTPAuth = true;
+                $mail->Username = 'kishor@izap.in';
+                $mail->Password = 'kishore001';
+                $mail->SMTPSecure = 'ssl';
+                $mail->Port = 465;
+                $mail->setFrom("kishor@izap.in") ;
+
+                $mail->addAddress('ajeet.kumar@izap.in');
+
+                $mail->addReplyTo('kishor@izap.in');
+                $mail->isHTML(true);
+                $mail->Subject = 'Here is the subject';
+                $mail->Body    = 'This is the HTML message body <b>in bold!</b>
+                            <p>click here http://localhost:9090/mail_verify.php?'.http_build_query(['token' => $token,]); '</p>';
+
+                if($mail->Send()) {
+                    echo "Message sent!";
+                } else {
+                    echo "Mailer Error: " . $mail->ErrorInfo;
+                }
+
+
 
             } else {
                 echo "email id does not matches";
@@ -145,6 +180,51 @@ public function reset_password(){
     }
 
 }
+
+
+function mail_verify(){
+
+    if(isset($_GET['token'])) {
+
+        $mailtoken=$_GET['token'];
+
+        if (isset($_POST['submit'])) {
+
+            $password = md5($_POST['password']);
+
+            $stmt = $this->conn->prepare("UPDATE user SET password = ? WHERE token=?");
+
+            $stmt->bind_param('ss', $password, $mailtoken);
+
+            $result = $stmt->execute();
+
+            if ($result == true) {
+                echo "password changed successfully";
+            }
+            else {
+                echo "password does not changed";
+            }
+
+        }
+
+
+    }
+
+}
+
+
+
+function password_update(){
+    $password = md5($_POST['password']);
+
+    $stmt = $this->conn->prepare("UPDATE user SET password = ? WHERE token=?");
+
+    $stmt->bind_param('sss', $password, $token);
+    $stmt->execute();
+
+    echo "password changed successfully";
+}
+
 
     public function fetchdata($id=0)
 
@@ -177,27 +257,41 @@ public function reset_password(){
     }
 
 
-    public function delete($id, $table)
+    public function delete()
     {
 
-        $query = "DELETE FROM $table WHERE id = ?";
-
-        $sql = $this->conn->prepare($query);
-
-        $sql->bind_param("i",$id);
 
 
+        extract($_POST);
+
+        if (isset($_GET['delete_user'])) {
+            $id = $_GET['delete_user'];
 
 
-        if ($sql->execute()) {
+            if ($_SESSION['user_id'] == $id) {
+
+                $query = "DELETE FROM user WHERE id = ?";
+
+                $sql = $this->conn->prepare($query);
+
+                $sql->bind_param("i", $id);
 
 
-            echo "Record deleted successfully";
+                if ($sql->execute()) {
 
 
-        } else {
-            echo "Error deleting record: " . $this->conn->error;
+                    echo "Record deleted successfully";
+
+
+                } else {
+                    echo "Error deleting record: " . $this->conn->error;
+                }
+
+
+            }
         }
+
+
 
 
     }
@@ -209,36 +303,34 @@ public function reset_password(){
         if (isset($_POST['submit'], $_GET['update_user']) && !empty($_GET['update_user'])) {
             $id = $_GET['update_user'];
 
-            if($_SESSION['user_id']==$_GET['update_user']){
 
+             if($_SESSION['user_id']==$id){
+                 extract($_POST);
 
-                extract($_REQUEST);
+            $stmt = $this->conn->prepare("UPDATE user SET fullname = ?, email = ? WHERE id=?");
 
-                $password = md5($password);
-                $stmt = $this->conn->prepare("UPDATE user SET fullname = ?, email = ?, password = ? WHERE id=?");
+            $stmt->bind_param('ssi', $fullname, $email, $id);
 
-                $stmt->bind_param('sssi', $fullname, $email, $password, $id);
+            $stmt->execute();
 
-                $stmt->execute();
+                /* print_r($stmt);
+                 exit();*/
 
-                if ($stmt->errno) {
-                    return false;
-                }
-                else {
-                    echo "record updated";
+            if ($stmt) {
+                echo "record updated";
+            }
+            else {
+                return false;
+            }
 
-                    return true;
-                }
 
             }
 
             else{
                 echo "not  updated";
             }
-
-
-
         }
+
 
 
     }

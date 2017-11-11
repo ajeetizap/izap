@@ -38,8 +38,9 @@ $data = $login->loginuser();
     </tr>
     <tr>
         <td><input type="text" name="email" value="" placeholder="email" required=""></td>
-
         <td><input type="password" name="password" value="" placeholder="password" required=""></td>
+<!--        <td><input type="text" name="fullname" value="" placeholder="fullname" ></td>-->
+
 
 
     </tr>

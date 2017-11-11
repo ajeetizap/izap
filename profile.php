@@ -22,7 +22,7 @@ ini_set('display_startup_errors', TRUE);
     <b id="welcome">Welcome <br>
         <?php
        echo $user_check;
-
+       echo $user_check_id;
 
         ?>
 
@@ -36,35 +36,29 @@ ini_set('display_startup_errors', TRUE);
 
 
 
-<?php
+    <?php
 
-$basedir = realpath(__DIR__);
-include_once($basedir . '/users_file/user.php');
-
-
-$user=new  user();
+    $basedir = realpath(__DIR__);
+    include_once($basedir . '/users_file/user.php');
 
 
-if(isset($_GET['update_user'])) {
-
-    $id=$_GET['update_user'];
-
-    $data = $user->fetchdata($id);
-
-}
-
-$updates = $user->update();
-
-$insert = $user->insert_user();
+    $user=new  user();
 
 
-if (isset($_GET['delete_user']))
+    if(isset($_GET['update_user'])) {
 
-{
-    $id = $_GET['delete_user'];
+        $id=$_GET['update_user'];
 
-    $result = $user->delete($id, 'user');
-}
+        $data = $user->fetchdata($id);
+
+    }
+
+    $updates = $user->update();
+
+    $insert = $user->insert_user();
+
+
+    $result = $user->delete();
 
 
 
@@ -94,7 +88,7 @@ if (isset($_GET['delete_user']))
 
                          <th><label>email</label></th>
 
-                         <th><label>password</label></th>
+
 
 
 
@@ -104,7 +98,7 @@ if (isset($_GET['delete_user']))
 
                          <td><input type="text" name="email" value="<?php echo isset( $data['email']) ? $data['email'] : ''; ?>" placeholder="email" required=""></td>
 
-                         <td><input type="password" name="password" value="<?php echo isset( $data['password']) ? $data['password'] : ''; ?>" placeholder="password" required=""></td>
+<!--                         <td><input type="password" name="password" value="--><?php //echo isset( $data['password']) ? $data['password'] : ''; ?><!--" placeholder="password" required=""></td>-->
 
 
                      </tr>
@@ -113,7 +107,7 @@ if (isset($_GET['delete_user']))
                          <td>
 
 
-                             <input type="hidden" name="id" value="<?php echo isset($_GET['update']) ? $_GET['update'] : ''; ?>" />
+                             <input type="hidden" name="id" value="<?php echo isset($_GET['update_user']) ? $_GET['update_user'] : ''; ?>" />
                              <input type="submit" name="submit" id="signup" value="signup">
 
 
@@ -167,9 +161,13 @@ if (isset($_GET['delete_user']))
                      echo "<td> <center>" . $rows["email"] . "<center></td>";
 
 
+                     if ($_SESSION['user_id'] == $rows['id']) {
 
-                     echo "<td> <a href='profile.php?update_user=$rows[id]'><input type='button' id='edit' value='edit'></a><br /></td>";
-                     echo "<td> <a href='profile.php?delete_user=$rows[id]' onClick=\"return confirm('Are you sure you want to delete?');\"><input type='button' id='drop' value='drop'  ></a><br /></td>";
+
+                         echo "<td> <a href='profile.php?update_user=$rows[id]'><input type='button'  value='edit'></a><br /></td>";
+                         echo "<td> <a href='profile.php?delete_user=$rows[id]' onClick=\"return confirm('Are you sure you want to delete?');\"><input type='button'  value='drop'  ></a><br /></td>";
+
+                     }
                      echo "</tr>";
 
 
@@ -296,10 +294,6 @@ if (isset($_GET['delete_user']))
 
                  <br> <br> <br> <br> <br> <br>
 
-
-
-
-
                  <table>
                      <tr>
 
@@ -311,10 +305,7 @@ if (isset($_GET['delete_user']))
                          <th><label>Description</label></th>
                          <th><label>Active</label></th>
 
-
-
                      </tr>
-
 
 
 
@@ -354,14 +345,7 @@ if (isset($_GET['delete_user']))
                      ?>
 
 
-
-
-
                  </table>
-
-
-
-
 
 
              </body>
@@ -370,6 +354,43 @@ if (isset($_GET['delete_user']))
              </html>
 
 
+
+
+         </td>
+     </tr>
+     <tr>
+
+
+         <td>
+
+             <?php
+
+
+             $data = $user->mail_verify();
+
+             ?>
+
+
+
+
+             <h1>Reset password here</h1>
+
+             <form action="" method="post">
+                 <table>
+                     <tr>
+
+                         <th><label>password</label></th>
+                     </tr>
+                     <tr>
+                         <td><input type="password" name="password" placeholder="password" required></td>
+                     </tr>
+                     <tr>
+                         <td>
+                             <input type="submit" name="submit" value="change password">
+                         </td>
+                     </tr>
+                 </table>
+             </form>
 
 
          </td>

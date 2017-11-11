@@ -1,5 +1,5 @@
     <?php
-    session_set_cookie_params(3600,"/");
+        session_set_cookie_params(3600,"/");
         session_start();
 
 
@@ -15,5 +15,6 @@
         define('DB_PASSWORD', 'ajeet');
 
         define('DB_DATABASE', 'ajeet');
+
 
     ?>
