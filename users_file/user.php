@@ -131,7 +131,6 @@ public function reset_password(){
 
             if ($row >= 1) {
 
-//                $selector = bin2hex(random_bytes(8));
                 $token = random_bytes(16);
                 $token = md5($token);
 
@@ -169,16 +168,12 @@ public function reset_password(){
                     echo "Mailer Error: " . $mail->ErrorInfo;
                 }
 
-
-
-            } else {
+            }
+            else {
                 echo "email id does not matches";
             }
-
         }
-
     }
-
 }
 
 
@@ -239,16 +234,16 @@ function password_update(){
         }
         else{
 
-            $query=$this->conn->prepare("SELECT fullname,email,password FROM user WHERE id=?");
+            $query=$this->conn->prepare("SELECT fullname,email FROM user WHERE id=?");
 
             $query->bind_param("i",$id);
             $query->execute();
 
-            $query->bind_result($fullname,$email,$password);
+            $query->bind_result($fullname,$email);
 
             $query->fetch();
 
-            return ['fullname'=>$fullname,'email'=>$email,'password'=>$password];
+            return ['fullname'=>$fullname,'email'=>$email];
 
 
 

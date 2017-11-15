@@ -1,23 +1,23 @@
-<?php
+    <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
-
-
-$basedir = realpath(__DIR__);
-include_once($basedir . '/users_file/user.php');
+    error_reporting(E_ALL);
+    ini_set('display_errors', TRUE);
+    ini_set('display_startup_errors', TRUE);
 
 
-if(isset($_SESSION['login_user'])){
-    header("location: profile.php");
-}
+    $basedir = realpath(__DIR__);
+    include_once($basedir . '/users_file/user.php');
 
-$login = new user();
 
-$data = $login->loginuser();
+    if(isset($_SESSION['login_user'])){
+        header("location: profile.php");
+    }
 
-?>
+    $login = new user();
+
+    $data = $login->loginuser();
+
+    ?>
 
 <html>
 <head>
